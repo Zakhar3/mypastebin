@@ -1,6 +1,11 @@
 @extends('layout')
 
 @section('main_content')
-    <h1>Общедоступные вставки</h1>
-    <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Vel consequatur nostrum quaerat a. Voluptates consequuntur cumque dolores. Possimus necessitatibus cupiditate ab consequuntur, ex exercitationem alias eos tempora illo maiores! Facere.</p>
+    <h3>Общедоступные вставки</h3>
+    @foreach($data as $el)
+    <div>
+        <a href="{{ route('paste.one', $el->id) }}"><h5 style="display: inline;">{{ $el->title }}</h5></a>
+        <small>{{ $el->created_at }}</small>
+</div>
+    @endforeach
 @endsection

@@ -13,12 +13,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('newpaste');
-});
+Route::name('paste.')->group(function(){
+    
+    Route::get('/', function(){
+        return view('newpaste');
+    })->name('new');
 
-Route::get('/allpaste', function () {
-    return view('allpaste');
+    Route::post('/', [\App\Http\Controllers\MainController::class, 'save']);
+    
+    // Route::get('/allpaste', function(){
+    //     return view('allpaste');
+    // })->name('all');
+
+    Route::get('/onepaste/{id}', [\App\Http\Controllers\MainController::class, 'open'])->name('one');
+
+    Route::get('/allpaste', [\App\Http\Controllers\MainController::class, 'post'])->name('all');
 });
 
 Route::name('user.')->group(function(){
@@ -35,6 +44,7 @@ Route::name('user.')->group(function(){
 
     Route::get('/logout', function(){
         Auth::logout();
+        return redirect(route('user.login'));
     })->name('logout');
 
     Route::get('/registration', function(){

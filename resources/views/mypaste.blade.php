@@ -1,6 +1,6 @@
 @extends('layout')
 
 @section('main_content')
-    <h1>My вставки</h1>
-    <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Vel consequatur nostrum quaerat a. Voluptates consequuntur cumque dolores. Possimus necessitatibus cupiditate ab consequuntur, ex exercitationem alias eos tempora illo maiores! Facere.</p>
+    <h3>Мои вставки</h3>
+    <a href="/logout" class="btn btn-outline-primary me-2">Покинуть страницу пользователя</a>
 @endsection
