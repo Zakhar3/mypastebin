@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Models\Paste;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,9 +16,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::name('paste.')->group(function(){
     
-    Route::get('/', function(){
-        return view('newpaste');
-    })->name('new');
+    // Route::get('/', function(){
+    //     return view('newpaste');
+    // })->name('new');
+
+    Route::get('/', [\App\Http\Controllers\MainController::class, 'au'])->name('new');
 
     Route::post('/', [\App\Http\Controllers\MainController::class, 'save']);
     
@@ -25,19 +28,20 @@ Route::name('paste.')->group(function(){
     //     return view('allpaste');
     // })->name('all');
 
-    Route::get('/onepaste/{id}', [\App\Http\Controllers\MainController::class, 'open'])->name('one');
+    Route::get('/paste/{id}', [\App\Http\Controllers\MainController::class, 'open'])->name('one');
 
     Route::get('/allpaste', [\App\Http\Controllers\MainController::class, 'post'])->name('all');
 });
 
 Route::name('user.')->group(function(){
-    Route::view('/mypaste', 'mypaste')->middleware('auth')->name('mypaste');
+    Route::get('/mypaste', [\App\Http\Controllers\MainController::class, 'my'])->middleware('auth')->name('mypaste');
 
     Route::get('/login', function(){
         if(Auth::check()){
             return redirect(route('user.mypaste'));
         }
-        return view('login');
+        $paste = new Paste;
+        return view('login', ['datall' => $paste->where('typed', '=', 'public')->orderBy('created_at', 'desc')->limit(10)->get()]);
     })->name('login');
 
     Route::post('/login', [\App\Http\Controllers\LoginController::class, 'login']);
@@ -51,7 +55,8 @@ Route::name('user.')->group(function(){
         if(Auth::check()){
             return redirect(route('user.mypaste'));
         }
-        return view('registration');
+        $paste = new Paste;
+        return view('registration', ['datall' => $paste->where('typed', '=', 'public')->orderBy('created_at', 'desc')->limit(10)->get()]);
     })->name('registration');
 
         Route::post('/registration',[\App\Http\Controllers\RegisterController::class, 'save']);
